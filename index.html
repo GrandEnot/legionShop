@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>FIGHT ZONE — экипировка для единоборств</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <div class="container header-inner">
+    <div class="logo">ЛЕГ<span>ИОН</span></div>
+    <div class="nav-links">
+      <a href="#" class="nav-link active" data-page="home">Главная</a>
+      <a href="#" class="nav-link" data-page="products">Товары</a>
+      <a href="#" class="nav-link" data-page="contacts">Контакты</a>
+      <span class="cart-icon" id="cartToggle">
+        <i class="fas fa-shopping-cart"></i>
+        <span class="cart-count" id="cartCount">0</span>
+      </span>
+    </div>
+  </div>
+</header>
+
+<div class="overlay" id="overlay"></div>
+<div class="cart-sidebar" id="cartSidebar">
+  <div class="cart-header">
+    <h2><i class="fas fa-shopping-bag"></i> Корзина</h2>
+    <i class="fas fa-times" style="cursor:pointer" id="closeCart"></i>
+  </div>
+  <div class="cart-items" id="cartItems"></div>
+  <div class="cart-total" id="cartTotal">Итого: 0 ₽</div>
+  <button class="btn" style="margin-top:20px; width:100%">Оформить заказ</button>
+</div>
+
+<div class="modal" id="productModal">
+  <div class="modal-content">
+    <button class="modal-close" id="modalClose">&times;</button>
+    <div class="modal-image" id="modalImage"></div>
+    <div class="modal-title" id="modalTitle"></div>
+    <div class="modal-brand" id="modalBrand"></div>
+    <div class="modal-desc" id="modalDesc"></div>
+    <div class="modal-price" id="modalPrice"></div>
+    <div class="modal-actions">
+      <button class="btn" id="modalAddToCart"><i class="fas fa-cart-plus"></i> В корзину</button>
+      <span style="color:#888">Размер: <span id="modalSize">—</span></span>
+    </div>
+  </div>
+</div>
+
+<main class="container">
+  <!-- ГЛАВНАЯ -->
+  <div id="home" class="page active">
+    <div class="hero">
+      <h1>Экипировка<br>для настоящих бойцов</h1>
+      <div class="slogan">Профессиональное снаряжение. Минимализм. Мощь.</div>
+    </div>
+    <div class="photo-area">
+      <div class="photo-placeholder photo-placeholder-single">
+        <img src="img/shop.jpg" alt="Магазин FIGHT ZONE">
+      </div>
+    </div>
+    <div>
+      <div class="section-title"><i class="fas fa-fire"></i> Популярные товары</div>
+      <div class="products-grid" id="home-featured"></div>
+    </div>
+    <div class="video-section">
+      <div class="section-title"><i class="fas fa-play"></i> Видео / тренировки</div>
+      <div class="video-wrapper">
+        <iframe width="100%" height="100%" src="vid/cut.mp4" title="YouTube" frameborder="0" allowfullscreen></iframe>
+      </div>
+    </div>
+    <div style="margin: 40px 0;">
+      <div class="section-title"><i class="fas fa-map-pin"></i> Контакты</div>
+      <div style="display: flex; gap: 30px; flex-wrap: wrap;">
+        <p><i class="fas fa-phone"></i> +7 (999) 123-45-67</p>
+        <p><i class="fas fa-envelope"></i> fight@zone.ru</p>
+        <p><i class="fas fa-location-dot"></i> Москва, ул. Бойцовская, 12</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ТОВАРЫ (с фильтрами по категории/подкатегории/цене/размеру/поиску) -->
+  <div id="products" class="page">
+    <div style="margin-top: 30px;">
+      <h2 class="section-title"><i class="fas fa-sliders"></i> Каталог экипировки</h2>
+      <div class="filters-bar">
+        <div class="filter-group">
+          <label>Категория</label>
+          <select id="categoryFilter"></select>
+        </div>
+        <div class="filter-group">
+          <label>Подкатегория</label>
+          <select id="subcategoryFilter"></select>
+        </div>
+        <div class="filter-group">
+          <label>Поиск</label>
+          <input type="text" id="searchInput" placeholder="Название или бренд...">
+        </div>
+        <div class="filter-group">
+          <label>Размер</label>
+          <select id="sizeFilter"></select>
+        </div>
+        <div class="filter-group">
+          <label>Цена от/до</label>
+          <div class="price-inputs">
+            <input type="number" id="priceMin" placeholder="0">
+            <span>—</span>
+            <input type="number" id="priceMax" placeholder="25000">
+          </div>
+        </div>
+        <button class="btn" id="resetProductFilters">Сброс</button>
+      </div>
+      <div id="filteredProducts" class="products-grid"></div>
+    </div>
+  </div>
+
+  <!-- КОНТАКТЫ -->
+  <div id="contacts" class="page">
+    <div style="margin-top: 30px;">
+      <h2 class="section-title"><i class="fas fa-address-card"></i> Контакты и расположение</h2>
+      <div class="contacts-block">
+        <div class="map-container">
+          <iframe src="https://yandex.ru/map-widget/v1/?ll=30.356600%2C59.994795&z=16&pt=30.356600,59.994795,pm2rdl" width="100%" height="100%" frameborder="0"></iframe>
+        </div>
+        <div class="contact-details">
+          <h3>FIGHT ZONE</h3>
+          <p><i class="fas fa-map-marker-alt"></i> г. Cанкт-Петербург, ул. Бойцовская, д.12</p>
+          <p><i class="fas fa-clock"></i> Ежедневно 10:00 – 22:00</p>
+          <p><i class="fas fa-phone-alt"></i> +7 (999) 123-45-67</p>
+          <p><i class="fas fa-envelope"></i> shop@fightzone.ru</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="container" style="display: flex; justify-content: space-between;">
+    <span>© 2026 FIGHT ZONE. Экипировка для единоборств</span>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
