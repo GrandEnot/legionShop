@@ -1,15 +1,6 @@
 (function(){
   "use strict";
 
-  // ===================== НАСТРОЙКИ EMAILJS =====================
-  // Замените значения ниже на свои после регистрации на EmailJS.com
-  const EMAILJS_PUBLIC_KEY = "YOUR_PUBLIC_KEY";      // вставьте ваш Public Key
-  const EMAILJS_SERVICE_ID = "YOUR_SERVICE_ID";      // вставьте Service ID
-  const EMAILJS_TEMPLATE_ID = "YOUR_TEMPLATE_ID";    // вставьте Template ID
-
-  // Инициализация EmailJS
-  emailjs.init(EMAILJS_PUBLIC_KEY);
-
   // ===================== ДАННЫЕ ТОВАРОВ =====================
   const productsData = [
     {category:"Ударная экипировка", subcategory:"Перчатки", name:"Перчатки боксерские / муай-тай", brandModel:"Fairtex BGV1", sizes:"10,12,14,16 oz", price:12900, desc:"Эргономичные перчатки из премиальной кожи с уникальной контурной посадкой. Трехслойная пена Fairtex обеспечивает отличную защиту кисти и костяшек. Идеальны для спаррингов и работы на мешках.", image:"img/fairtex-bgv1.png"},
@@ -54,7 +45,6 @@
   ];
 
   // ===================== DOM-элементы =====================
-  // Страницы
   const pages = {
     home: document.getElementById('home'),
     products: document.getElementById('products'),
@@ -101,7 +91,6 @@
   const priceMax = document.getElementById('priceMax');
   const resetFiltersBtn = document.getElementById('resetProductFilters');
 
-  // Контейнеры для карточек
   const homeFeatured = document.getElementById('home-featured');
   const filteredProducts = document.getElementById('filteredProducts');
 
@@ -234,7 +223,7 @@
   closeCart.addEventListener('click', closeCartSidebar);
   overlay.addEventListener('click', closeCartSidebar);
 
-  // ===================== ОФОРМЛЕНИЕ ЗАКАЗА =====================
+  // ===================== ОФОРМЛЕНИЕ ЗАКАЗА (без реальной отправки) =====================
   function openCheckoutModal() {
     if (cart.length === 0) {
       alert('Корзина пуста');
@@ -252,36 +241,16 @@
 
   checkoutBtn.addEventListener('click', openCheckoutModal);
 
-  checkoutForm.addEventListener('submit', async (e) => {
+  checkoutForm.addEventListener('submit', (e) => {
     e.preventDefault();
-    const formData = new FormData(checkoutForm);
-    const totalAmount = cart.reduce((sum, i) => sum + i.price*i.qty, 0);
-    const orderData = {
-      name: formData.get('name'),
-      phone: formData.get('phone'),
-      email: formData.get('email'),
-      address: formData.get('address'),
-      comment: formData.get('comment') || '—',
-      items: cart.map(i => `${i.name} x${i.qty} = ${i.price*i.qty} ₽`).join(', '),
-      total: totalAmount.toLocaleString() + ' ₽'
-    };
-
-    checkoutMessage.innerHTML = '⏳ Отправка заказа...';
-    checkoutMessage.style.color = '#ccc';
-
-    try {
-      await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, orderData);
-      checkoutMessage.innerHTML = '<div style="background:#1e3a2e; color:#a3e0c0; padding:12px; border-radius:16px;">✅ Заказ оформлен! Мы свяжемся с вами в ближайшее время.</div>';
-      cart = [];
-      updateCartUI();
-      setTimeout(() => {
-        checkoutModal.classList.remove('active');
-        overlay.classList.remove('active');
-      }, 2500);
-    } catch (error) {
-      console.error('Ошибка отправки:', error);
-      checkoutMessage.innerHTML = '<div style="background:#3a1e1e; color:#e0a3a3; padding:12px; border-radius:16px;">❌ Ошибка отправки. Попробуйте позже или свяжитесь с нами по телефону.</div>';
-    }
+    // Имитация успешного оформления
+    checkoutMessage.innerHTML = '<div style="background:#1e3a2e; color:#a3e0c0; padding:12px; border-radius:16px;">✅ Заказ оформлен! Мы свяжемся с вами в ближайшее время.</div>';
+    cart = [];
+    updateCartUI();
+    setTimeout(() => {
+      checkoutModal.classList.remove('active');
+      overlay.classList.remove('active');
+    }, 2000);
   });
 
   checkoutModalClose.addEventListener('click', () => {
@@ -289,7 +258,7 @@
     overlay.classList.remove('active');
   });
 
-  // ===================== НАВИГАЦИЯ ПО СТРАНИЦАМ =====================
+  // ===================== НАВИГАЦИЯ =====================
   function switchPage(pageId) {
     Object.values(pages).forEach(p => p.classList.remove('active'));
     pages[pageId].classList.add('active');
@@ -388,10 +357,8 @@
     populateCategorySelect();
     populateSizeFilter();
     applyFilters();
-    // Стартовая страница — home
     switchPage('home');
   }
 
   init();
-
 })();
